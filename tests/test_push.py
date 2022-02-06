@@ -57,3 +57,6 @@ def test_firing(client: FlaskClient):
         'groupKey': '{}:{alertname="testing"}',
         'truncatedAlerts': 0
     })
+
+    x = input("did you receive a push message? (yes/no)")
+    assert x.lower() == "yes"
