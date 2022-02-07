@@ -16,15 +16,18 @@ app = Flask(__name__)
 @app.route('/push', methods=["POST"])
 def push():
     data = request.json
-    title = data["commonAnnotations"]["summary"]
-    description = data["commonAnnotations"]["description"]
 
-    message = f"{data['status']} - {description}"
+    for alert in data["alerts"]:
 
-    requests.post(
-        f"{BASE_URL}/message?token={TOKEN}",
-        {"title": title, "message": message, "priority": PRIORITY},
-        verify=VERIFY_SSL
-    )
+        title = alert["annotations"]["summary"]
+        description = alert["annotations"]["description"]
+
+        message = f"{alert['status']} - {description}"
+
+        requests.post(
+            f"{BASE_URL}/message?token={TOKEN}",
+            {"title": title, "message": message, "priority": PRIORITY},
+            verify=VERIFY_SSL
+        )
 
     return "ok"
